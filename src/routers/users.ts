@@ -16,14 +16,14 @@ import {
 
 const router = Router();
 
-router.get('/users', getUsers);
+router.get('/', getUsers);
 router.get(
-  '/users/:userId',
+  '/:userId',
   validateParamObjectId('userId', 'Передан некорректный _id пользователя.'),
   getUserById,
 );
 router.post(
-  '/users',
+  '/',
   validateRequest(
     userSchema,
     'Переданы некорректные данные при создании пользователя.',
@@ -32,7 +32,7 @@ router.post(
 );
 
 router.patch(
-  '/users/me',
+  '/me',
   validateRequest(
     userPatchSchema,
     'Переданы некорректные данные при обновлении профиля.',
@@ -40,7 +40,7 @@ router.patch(
   updateUser,
 );
 router.patch(
-  '/users/me/avatar',
+  '/me/avatar',
   validateRequest(
     userAvatarSchema,
     ' Переданы некорректные данные при обновлении аватара.',

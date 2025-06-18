@@ -5,6 +5,7 @@ import {
   MestoDefaultError,
   NotFoundError,
 } from '../types/errors';
+import { Status } from '../types/responseCodes';
 
 export const getUsers = (req: Request, res: Response, next: NextFunction) =>
   User.find({})
@@ -12,7 +13,7 @@ export const getUsers = (req: Request, res: Response, next: NextFunction) =>
       if (!users) {
         throw new MestoDefaultError();
       }
-      res.status(200).send(users);
+      res.send(users);
     })
     .catch(next);
 
@@ -27,7 +28,7 @@ export const getUserById = (
       if (!user) {
         throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
-      res.status(200).send(user);
+      res.send(user);
     })
     .catch(next);
 };
@@ -41,7 +42,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
           'Переданы некорректные данные при создании пользователя.',
         );
       }
-      res.status(201).send(user);
+      res.status(Status.CREATED).send(user);
     })
     .catch(next);
 };

@@ -1,7 +1,12 @@
+import { Status } from './responseCodes';
+
 export class MestoDefaultError extends Error {
   statusCode: number;
 
-  constructor(message: string = 'Ошибка по умолчанию.', code: number = 500) {
+  constructor(
+    message: string = 'На сервере произошла ошибка.',
+    code: number = Status.INTERNAL_ERROR,
+  ) {
     super(message);
     this.statusCode = code;
   }
@@ -9,18 +14,18 @@ export class MestoDefaultError extends Error {
 
 export class BadRequestError extends MestoDefaultError {
   constructor(message: string) {
-    super(message, 400);
+    super(message, Status.BAD_REQUEST);
   }
 }
 
 export class NotFoundError extends MestoDefaultError {
   constructor(message: string) {
-    super(message, 404);
+    super(message, Status.NOT_FOUND);
   }
 }
 
 export class InternalServerError extends MestoDefaultError {
   constructor(message: string) {
-    super(message, 500);
+    super(message, Status.INTERNAL_ERROR);
   }
 }

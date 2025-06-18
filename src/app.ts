@@ -3,12 +3,11 @@ import mongoose from 'mongoose';
 import userRouter from './routers/users';
 import cardRouter from './routers/cards';
 import { errorHandler } from './middlewares/errorHandler';
+import config from './config';
 
-require('dotenv').config();
+const { port, databaseUrl } = config;
 
-const { PORT = 3000 } = process.env;
-
-mongoose.connect('mongodb://localhost:27017/mydb');
+mongoose.connect(databaseUrl);
 
 const app = express();
 app.use(express.json());
@@ -22,7 +21,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use('/', userRouter, cardRouter);
+app.use('/users', userRouter);
+app.use('/cards', cardRouter);
 
 app.use(errorHandler);
-app.listen(PORT);
+app.listen(port);

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { Status } from '../types/responseCodes';
 import Card from '../models/card';
 import {
   BadRequestError,
@@ -12,7 +13,7 @@ export const getCards = (req: Request, res: Response, next: NextFunction) => {
       if (!cards) {
         throw new MestoDefaultError();
       }
-      res.status(200).send(cards);
+      res.send(cards);
     })
     .catch(next);
 };
@@ -26,7 +27,7 @@ export const createCard = (req: Request, res: Response, next: NextFunction) => {
           'Переданы некорректные данные при создании карточки.',
         );
       }
-      res.status(201).send(card);
+      res.status(Status.CREATED).send(card);
     })
     .catch(next);
 };

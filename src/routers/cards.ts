@@ -14,9 +14,9 @@ import {
 
 const router = Router();
 
-router.get('/cards', getCards);
+router.get('/', getCards);
 router.post(
-  '/cards',
+  '/',
   validateRequest(
     cardSchema,
     'Переданы некорректные данные при создании карточки.',
@@ -24,13 +24,13 @@ router.post(
   createCard,
 );
 router.delete(
-  '/cards/:cardId',
+  '/:cardId',
   validateParamObjectId('cardId', 'Передан некорректный _id карточки.'),
   deleteCard,
 );
 
 router.put(
-  '/cards/:cardId/likes',
+  '/:cardId/likes',
   validateParamObjectId(
     'cardId',
     'Переданы некорректные данные для постановки/снятия лайка или некорректный _id карточки.',
@@ -39,7 +39,7 @@ router.put(
 );
 
 router.delete(
-  '/cards/:cardId/likes',
+  '/:cardId/likes',
   validateParamObjectId(
     'cardId',
     'Переданы некорректные данные для постановки/снятия лайка или некорректный _id карточки.',
