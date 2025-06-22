@@ -72,7 +72,8 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
           'Переданы некорректные данные при создании пользователя.'
         );
       }
-      res.status(Status.CREATED).send(user);
+      const { password: _, ...userWithoutPassword } = user.toObject();
+      res.status(Status.CREATED).send(userWithoutPassword);
     })
     .catch((err) => {
       if (err.code === 11000) {

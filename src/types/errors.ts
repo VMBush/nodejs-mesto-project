@@ -24,6 +24,12 @@ export class UnauthorizedError extends MestoDefaultError {
   }
 }
 
+export class ForbiddenError extends MestoDefaultError {
+  constructor(message: string) {
+    super(message, Status.FORBIDDEN);
+  }
+}
+
 export class NotFoundError extends MestoDefaultError {
   constructor(message: string) {
     super(message, Status.NOT_FOUND);

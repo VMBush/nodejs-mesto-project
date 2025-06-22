@@ -3,6 +3,7 @@ import { Status } from '../types/responseCodes';
 import Card from '../models/card';
 import {
   BadRequestError,
+  ForbiddenError,
   MestoDefaultError,
   NotFoundError,
 } from '../types/errors';
@@ -34,10 +35,18 @@ export const createCard = (req: Request, res: Response, next: NextFunction) => {
 
 export const deleteCard = (req: Request, res: Response, next: NextFunction) => {
   const { cardId } = req.params;
-  Card.deleteOne({ _id: cardId, owner: req.user._id })
-    .then(({ deletedCount }) => {
-      if (!deletedCount) {
-        throw new NotFoundError('Для текущего пользователя карточка с указанным _id не найдена.');
+  Card.findById(cardId)
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Карточка с указанным _id не найдена.');
+      } else if (card.owner.toString() !== req.user._id) {
+        throw new ForbiddenError('Недостаточно прав для удаления карточки.');
+      }
+      return Card.findByIdAndDelete(cardId);
+    })
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Карточка с указанным _id не найдена.');
       }
       const message = { message: 'Пост удалён' };
       res.send(message);
