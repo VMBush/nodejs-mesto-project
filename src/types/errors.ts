@@ -18,9 +18,21 @@ export class BadRequestError extends MestoDefaultError {
   }
 }
 
+export class UnauthorizedError extends MestoDefaultError {
+  constructor(message: string) {
+    super(message, Status.UNAUTHORIZED);
+  }
+}
+
 export class NotFoundError extends MestoDefaultError {
   constructor(message: string) {
     super(message, Status.NOT_FOUND);
+  }
+}
+
+export class ConflictError extends MestoDefaultError {
+  constructor(message: string) {
+    super(message, Status.CONFLICT);
   }
 }
 

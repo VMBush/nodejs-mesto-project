@@ -2,12 +2,11 @@ import { Router } from 'express';
 import {
   userAvatarSchema,
   userPatchSchema,
-  userSchema,
   validateParamObjectId,
   validateRequest,
 } from '../middlewares/validators';
 import {
-  createUser,
+  getCurrentUser,
   getUserById,
   getUsers,
   updateUser,
@@ -17,35 +16,28 @@ import {
 const router = Router();
 
 router.get('/', getUsers);
+router.get('/me', getCurrentUser);
 router.get(
   '/:userId',
   validateParamObjectId('userId', 'Передан некорректный _id пользователя.'),
-  getUserById,
-);
-router.post(
-  '/',
-  validateRequest(
-    userSchema,
-    'Переданы некорректные данные при создании пользователя.',
-  ),
-  createUser,
+  getUserById
 );
 
 router.patch(
   '/me',
   validateRequest(
     userPatchSchema,
-    'Переданы некорректные данные при обновлении профиля.',
+    'Переданы некорректные данные при обновлении профиля.'
   ),
-  updateUser,
+  updateUser
 );
 router.patch(
   '/me/avatar',
   validateRequest(
     userAvatarSchema,
-    ' Переданы некорректные данные при обновлении аватара.',
+    ' Переданы некорректные данные при обновлении аватара.'
   ),
-  updateUserAvatar,
+  updateUserAvatar
 );
 
 export default router;

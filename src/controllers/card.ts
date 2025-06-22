@@ -24,7 +24,7 @@ export const createCard = (req: Request, res: Response, next: NextFunction) => {
     .then((card) => {
       if (!card) {
         throw new BadRequestError(
-          'Переданы некорректные данные при создании карточки.',
+          'Переданы некорректные данные при создании карточки.'
         );
       }
       res.status(Status.CREATED).send(card);
@@ -34,10 +34,10 @@ export const createCard = (req: Request, res: Response, next: NextFunction) => {
 
 export const deleteCard = (req: Request, res: Response, next: NextFunction) => {
   const { cardId } = req.params;
-  Card.deleteOne({ _id: cardId })
+  Card.deleteOne({ _id: cardId, owner: req.user._id })
     .then(({ deletedCount }) => {
       if (!deletedCount) {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        throw new NotFoundError('Для текущего пользователя карточка с указанным _id не найдена.');
       }
       const message = { message: 'Пост удалён' };
       res.send(message);
@@ -49,7 +49,7 @@ export const likeCard = (req: Request, res: Response, next: NextFunction) =>
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true },
+    { new: true }
   )
     .then((card) => {
       if (!card) {
@@ -63,7 +63,7 @@ export const dislikeCard = (req: Request, res: Response, next: NextFunction) =>
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true },
+    { new: true }
   )
     .then((card) => {
       if (!card) {
